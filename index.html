@@ -1,0 +1,685 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="es"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1">&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1">&lt;title&gt;IEP - Sistema de Gestión&lt;/title&gt;</p>
+<p class="p1">&lt;style&gt;</p>
+<p class="p1">:root{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--blue:#00AEEF;--blue-dark:#0077B6;--blue-deep:#005A8E;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--blue-light:#E8F7FD;--blue-pale:#F0F9FF;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--text:#1A2E3B;--text-sec:#5A7A8A;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--border:rgba(0,174,239,.18);--white:#fff;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--radius:10px;--shadow:0 2px 16px rgba(0,120,180,.10);</p>
+<p class="p1">}</p>
+<p class="p1">*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,sans-serif}</p>
+<p class="p1">body{background:var(--blue-pale);color:var(--text);font-size:14px;min-height:100vh}</p>
+<p class="p1">.topbar{background:linear-gradient(135deg,var(--blue-dark) 0%,var(--blue) 100%);box-shadow:0 2px 12px rgba(0,100,160,.25);position:sticky;top:0;z-index:50}</p>
+<p class="p1">.topbar-inner{display:flex;align-items:center;max-width:1400px;margin:0 auto;padding:0 1.5rem}</p>
+<p class="p1">.brand{display:flex;align-items:center;gap:10px;padding:10px 0;margin-right:2rem;flex-shrink:0}</p>
+<p class="p1">.brand-logo{width:38px;height:38px;border-radius:50%;background:#fff;padding:2px;flex-shrink:0;object-fit:cover}</p>
+<p class="p1">.brand-text{color:#fff;font-size:14px;font-weight:600;line-height:1.2;display:flex;flex-direction:column}</p>
+<p class="p1">.brand-text span{font-size:10px;font-weight:400;opacity:.8;letter-spacing:.04em}</p>
+<p class="p1">.nav{display:flex;align-items:stretch;flex:1;gap:2px}</p>
+<p class="p1">.nav-item{display:flex;align-items:center;gap:7px;padding:0 16px;height:56px;cursor:pointer;color:rgba(255,255,255,.75);font-size:13px;font-weight:500;border-bottom:3px solid transparent;transition:all .18s;white-space:nowrap}</p>
+<p class="p1">.nav-item:hover{color:#fff;background:rgba(255,255,255,.08)}</p>
+<p class="p1">.nav-item.active{color:#fff;border-bottom-color:#fff;background:rgba(255,255,255,.12)}</p>
+<p class="p1">.nav-item svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}</p>
+<p class="p1">.topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}</p>
+<p class="p1">.sync-pill{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border-radius:20px;padding:5px 12px;font-size:12px;color:rgba(255,255,255,.9)}</p>
+<p class="p1">.sdot{width:7px;height:7px;border-radius:50%;background:#7EE8A2;flex-shrink:0}</p>
+<p class="p1">.sdot.syncing{background:#FFD166;animation:pulse 1s infinite}</p>
+<p class="p1">.sdot.error{background:#FF6B6B}</p>
+<p class="p1">@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}</p>
+<p class="p1">.btn-refresh{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:20px;padding:5px 12px;font-size:12px;cursor:pointer;font-family:inherit;transition:all .15s}</p>
+<p class="p1">.btn-refresh:hover{background:rgba(255,255,255,.25)}</p>
+<p class="p1">.btn-refresh svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}</p>
+<p class="p1">.hamburger{display:none;background:rgba(255,255,255,.15);border:none;border-radius:8px;padding:7px;cursor:pointer;color:#fff;margin-left:auto}</p>
+<p class="p1">.hamburger svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block}</p>
+<p class="p1">.mobile-menu{display:none;background:var(--blue-dark);border-top:1px solid rgba(255,255,255,.1)}</p>
+<p class="p1">.mobile-menu.open{display:block}</p>
+<p class="p1">.mobile-nav-item{display:flex;align-items:center;gap:10px;padding:14px 1.5rem;color:rgba(255,255,255,.8);font-size:14px;cursor:pointer;border-left:3px solid transparent}</p>
+<p class="p1">.mobile-nav-item.active{color:#fff;border-left-color:#fff;background:rgba(255,255,255,.08)}</p>
+<p class="p1">.mobile-nav-item svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}</p>
+<p class="p1">.main{max-width:1400px;margin:0 auto;padding:2rem 1.5rem}</p>
+<p class="p1">.page{display:none}.page.active{display:block}</p>
+<p class="p1">h1{font-size:20px;font-weight:600;margin-bottom:1.5rem;color:var(--blue-dark)}</p>
+<p class="p1">.metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:2rem}</p>
+<p class="p1">.metric{background:var(--white);border-radius:var(--radius);padding:1.1rem;text-align:center;border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden}</p>
+<p class="p1">.metric::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--blue-dark))}</p>
+<p class="p1">.metric-val{font-size:28px;font-weight:700;color:var(--blue-dark)}</p>
+<p class="p1">.metric-lbl{font-size:11px;color:var(--text-sec);margin-top:4px;font-weight:500;text-transform:uppercase;letter-spacing:.04em}</p>
+<p class="p1">.card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.5rem;box-shadow:var(--shadow)}</p>
+<p class="p1">.card-title{font-size:13px;font-weight:600;margin-bottom:1rem;color:var(--blue-dark);text-transform:uppercase;letter-spacing:.04em}</p>
+<p class="p1">.chart-wrap{position:relative;width:100%;height:220px}</p>
+<p class="p1">.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}</p>
+<p class="p1">table{width:100%;border-collapse:collapse;font-size:13px}</p>
+<p class="p1">th{text-align:left;padding:9px 12px;color:var(--text-sec);font-weight:600;border-bottom:2px solid var(--blue-light);background:var(--blue-pale);font-size:11px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}</p>
+<p class="p1">td{padding:10px 12px;border-bottom:1px solid var(--blue-light);vertical-align:middle}</p>
+<p class="p1">tr:last-child td{border-bottom:none}</p>
+<p class="p1">tr:hover td{background:var(--blue-pale)}</p>
+<p class="p1">.toolbar{display:flex;align-items:center;gap:10px;margin-bottom:1rem;flex-wrap:wrap}</p>
+<p class="p1">.search-box{display:flex;align-items:center;gap:6px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);padding:7px 12px;flex:1;min-width:200px;transition:border .15s}</p>
+<p class="p1">.search-box:focus-within{border-color:var(--blue)}</p>
+<p class="p1">.search-box svg{width:15px;height:15px;stroke:var(--text-sec);fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}</p>
+<p class="p1">.search-box input{border:none;background:transparent;color:var(--text);font-size:13px;outline:none;width:100%}</p>
+<p class="p1">.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius);border:1.5px solid var(--border);background:var(--white);cursor:pointer;font-size:13px;color:var(--text);font-family:inherit;transition:all .15s;font-weight:500}</p>
+<p class="p1">.btn:hover{background:var(--blue-light);border-color:var(--blue)}</p>
+<p class="p1">.btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}</p>
+<p class="p1">.btn-primary{background:linear-gradient(135deg,var(--blue),var(--blue-dark))!important;color:#fff!important;border-color:var(--blue-dark)!important;box-shadow:0 2px 8px rgba(0,119,182,.3)}</p>
+<p class="p1">.btn-primary:hover{background:linear-gradient(135deg,var(--blue-dark),var(--blue-deep))!important}</p>
+<p class="p1">.btn-danger{color:#C0392B!important;border-color:#E8A0A0!important}</p>
+<p class="p1">.btn-danger:hover{background:#FFF0F0!important;border-color:#C0392B!important}</p>
+<p class="p1">.btn-sm{padding:5px 10px!important;font-size:12px!important}</p>
+<p class="p1">.btn:disabled{opacity:.5;cursor:not-allowed}</p>
+<p class="p1">.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}</p>
+<p class="p1">.bi{background:#DBEAFE;color:#1E40AF}</p>
+<p class="p1">.bs{background:#D1FAE5;color:#065F46}</p>
+<p class="p1">.bw{background:#FEF3C7;color:#92400E}</p>
+<p class="p1">.bp{background:#EDE9FE;color:#5B21B6}</p>
+<p class="p1">.bg{background:#F3F4F6;color:#374151}</p>
+<p class="p1">.b-blue{background:var(--blue-light);color:var(--blue-dark)}</p>
+<p class="p1">.b-guia{background:#FFF3CD;color:#7B4F00}</p>
+<p class="p2"><br></p>
+<p class="p1">/* MODAL */</p>
+<p class="p1">.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,40,80,.5);backdrop-filter:blur(3px);z-index:200;align-items:flex-start;justify-content:center;padding:1rem;overflow-y:auto}</p>
+<p class="p1">.modal-bg.open{display:flex}</p>
+<p class="p1">.modal{background:var(--white);border-radius:14px;width:100%;max-width:780px;border:1px solid var(--border);margin:auto;box-shadow:0 8px 40px rgba(0,80,140,.18);overflow:hidden}</p>
+<p class="p1">.modal-header{background:linear-gradient(135deg,var(--blue-dark),var(--blue));padding:1.1rem 1.5rem;display:flex;align-items:center;justify-content:space-between}</p>
+<p class="p1">.modal-header h2{font-size:15px;font-weight:600;color:#fff;margin:0}</p>
+<p class="p1">.modal-header button{background:rgba(255,255,255,.2);border:none;border-radius:6px;padding:5px;cursor:pointer;color:#fff;display:flex;align-items:center}</p>
+<p class="p1">.modal-header button svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}</p>
+<p class="p1">.modal-body{padding:1.25rem 1.5rem}</p>
+<p class="p1">.modal-section{margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--blue-light)}</p>
+<p class="p1">.modal-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}</p>
+<p class="p1">.modal-section-title{font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}</p>
+<p class="p1">.fg{margin-bottom:.7rem}</p>
+<p class="p1">.fg label{display:block;font-size:11px;color:var(--text-sec);margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}</p>
+<p class="p1">.fg input,.fg select{width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--white);color:var(--text);font-family:inherit;transition:border .15s}</p>
+<p class="p1">.fg input:focus,.fg select:focus{outline:none;border-color:var(--blue)}</p>
+<p class="p1">.fr2{display:grid;grid-template-columns:1fr 1fr;gap:10px}</p>
+<p class="p1">.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}</p>
+<p class="p1">.fr4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}</p>
+<p class="p1">.modal-actions{display:flex;justify-content:flex-end;gap:8px;padding:.9rem 1.5rem;background:var(--blue-pale);border-top:1px solid var(--border)}</p>
+<p class="p1">.grupos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;border:1.5px solid var(--border);border-radius:8px;padding:10px;max-height:130px;overflow-y:auto;background:var(--blue-pale)}</p>
+<p class="p1">.gc{display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer;padding:3px 6px;border-radius:6px;user-select:none}</p>
+<p class="p1">.gc:hover{background:var(--blue-light)}</p>
+<p class="p1">.gc input{cursor:pointer;width:13px;height:13px;accent-color:var(--blue);flex-shrink:0}</p>
+<p class="p2"><br></p>
+<p class="p1">/* SEARCHABLE SELECT */</p>
+<p class="p1">.sel-wrap{position:relative}</p>
+<p class="p1">.sel-search{width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:8px 8px 0 0;font-size:13px;background:var(--white);color:var(--text);font-family:inherit;outline:none;border-bottom:1px solid var(--blue-light)}</p>
+<p class="p1">.sel-search:focus{border-color:var(--blue)}</p>
+<p class="p1">.sel-list{display:none;position:absolute;top:100%;left:0;right:0;background:var(--white);border:1.5px solid var(--blue);border-top:none;border-radius:0 0 8px 8px;max-height:160px;overflow-y:auto;z-index:10;box-shadow:0 4px 12px rgba(0,80,140,.12)}</p>
+<p class="p1">.sel-list.open{display:block}</p>
+<p class="p1">.sel-option{padding:8px 10px;font-size:13px;cursor:pointer;transition:background .1s}</p>
+<p class="p1">.sel-option:hover,.sel-option.selected{background:var(--blue-light);color:var(--blue-dark)}</p>
+<p class="p1">.sel-hidden{display:none}</p>
+<p class="p1">.sel-display{width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;background:var(--white);color:var(--text);font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:space-between}</p>
+<p class="p1">.sel-display:focus{outline:none;border-color:var(--blue)}</p>
+<p class="p1">.sel-display svg{width:14px;height:14px;stroke:var(--text-sec);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}</p>
+<p class="p2"><br></p>
+<p class="p1">/* DETAIL */</p>
+<p class="p1">.detail-view{display:none;position:fixed;inset:0;background:rgba(0,40,80,.5);backdrop-filter:blur(3px);z-index:200;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto}</p>
+<p class="p1">.detail-view.open{display:flex}</p>
+<p class="p1">.detail-card{background:var(--white);border-radius:14px;width:100%;max-width:520px;margin:auto;box-shadow:0 8px 40px rgba(0,80,140,.18);overflow:hidden}</p>
+<p class="p1">.detail-header{background:linear-gradient(135deg,var(--blue-dark),var(--blue));padding:1.5rem;display:flex;align-items:center;justify-content:space-between}</p>
+<p class="p1">.detail-avatar{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:#fff;flex-shrink:0;border:2px solid rgba(255,255,255,.4)}</p>
+<p class="p1">.detail-name{color:#fff;font-size:16px;font-weight:600;text-transform:uppercase}</p>
+<p class="p1">.detail-sub{color:rgba(255,255,255,.8);font-size:12px;margin-top:2px;text-transform:uppercase}</p>
+<p class="p1">.detail-body{padding:1.25rem}</p>
+<p class="p1">.ds{margin-bottom:1.1rem;padding-bottom:1.1rem;border-bottom:1px solid var(--blue-light)}</p>
+<p class="p1">.ds:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}</p>
+<p class="p1">.ds-title{font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}</p>
+<p class="p1">.dr{display:flex;justify-content:space-between;padding:4px 0;font-size:13px}</p>
+<p class="p1">.dl{color:var(--text-sec)}.dv{font-weight:500;text-align:right;max-width:60%;text-transform:uppercase}</p>
+<p class="p1">.avatar{border-radius:50%;background:var(--blue-light);display:flex;align-items:center;justify-content:center;font-weight:600;color:var(--blue-dark);flex-shrink:0}</p>
+<p class="p1">.empty{text-align:center;padding:3rem;color:var(--text-sec);font-size:13px}</p>
+<p class="p1">.empty svg{width:36px;height:36px;stroke:var(--border);fill:none;stroke-width:1.5;display:block;margin:0 auto 8px}</p>
+<p class="p1">.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:13px;z-index:300;display:flex;align-items:center;gap:8px;transform:translateY(80px);opacity:0;transition:all .25s;box-shadow:var(--shadow)}</p>
+<p class="p1">.toast.show{transform:translateY(0);opacity:1}</p>
+<p class="p1">.toast.success{border-left:3px solid #10B981;color:#065F46}</p>
+<p class="p1">.toast.error{border-left:3px solid #EF4444;color:#991B1B}</p>
+<p class="p1">.loading{display:flex;align-items:center;justify-content:center;gap:10px;padding:3rem;color:var(--text-sec);font-size:13px}</p>
+<p class="p1">.spin{width:18px;height:18px;border:2px solid var(--blue-light);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}</p>
+<p class="p1">@keyframes spin{to{transform:rotate(360deg)}}</p>
+<p class="p1">@media(max-width:768px){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.nav{display:none}.topbar-right{display:none}.hamburger{display:flex;align-items:center;justify-content:center}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.main{padding:1rem}.dash-grid{grid-template-columns:1fr}.metric-grid{grid-template-columns:repeat(2,1fr)}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.fr2,.fr3,.fr4{grid-template-columns:1fr 1fr}.modal{max-width:100%}.modal-bg{padding:.5rem}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.detail-card{max-width:100%}.detail-view{padding:.5rem}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.grupos-grid{grid-template-columns:repeat(2,1fr)}.brand-text{display:none}</p>
+<p class="p1">}</p>
+<p class="p1">@media(max-width:480px){.fr2,.fr3,.fr4{grid-template-columns:1fr}.metric-grid{grid-template-columns:repeat(2,1fr)}}</p>
+<p class="p1">&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1">&lt;header class="topbar"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="topbar-inner"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="brand"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="width:38px;height:38px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;svg viewBox="0 0 100 100" width="34" height="34" xmlns="http://www.w3.org/2000/svg"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;circle cx="50" cy="50" r="50" fill="#00AEEF"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;circle cx="50" cy="50" r="46" fill="none" stroke="white" stroke-width="1.5"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;text x="50" y="62" text-anchor="middle" font-family="serif" font-weight="bold" font-size="24" fill="white"&gt;IEP&lt;/text&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;path d="M20 50 Q50 30 80 50" fill="none" stroke="white" stroke-width="1.5"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;path d="M20 50 Q50 70 80 50" fill="none" stroke="white" stroke-width="1.5"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="brand-text"&gt;IEP&lt;span&gt;Iglesia Evangélica Pentecostal&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;nav class="nav"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="nav-item active" onclick="nav('dashboard',this)"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;rect x="3" y="3" width="7" height="7" rx="1"/&gt;&lt;rect x="14" y="3" width="7" height="7" rx="1"/&gt;&lt;rect x="3" y="14" width="7" height="7" rx="1"/&gt;&lt;rect x="14" y="14" width="7" height="7" rx="1"/&gt;&lt;/svg&gt;Resumen&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="nav-item" onclick="nav('personas',this)"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;circle cx="9" cy="7" r="4"/&gt;&lt;path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/&gt;&lt;path d="M16 3.13a4 4 0 0 1 0 7.75M21 21v-2a4 4 0 0 0-3-3.85"/&gt;&lt;/svg&gt;Hermanos&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="nav-item" onclick="nav('clases',this)"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/&gt;&lt;polyline points="9 22 9 12 15 12 15 22"/&gt;&lt;/svg&gt;Clases&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/nav&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="topbar-right"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="sync-pill"&gt;&lt;div class="sdot syncing" id="syncDot"&gt;&lt;/div&gt;&lt;span id="syncMsg"&gt;Conectando...&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn-refresh" onclick="loadAll()"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;path d="M23 4v6h-6"/&gt;&lt;path d="M1 20v-6h6"/&gt;&lt;path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/&gt;&lt;/svg&gt;Actualizar&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="hamburger" onclick="toggleMenu()"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;path d="M3 12h18M3 6h18M3 18h18"/&gt;&lt;/svg&gt;&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="mobile-menu" id="mobileMenu"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="mobile-nav-item active" onclick="navMobile('dashboard',this)"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;rect x="3" y="3" width="7" height="7" rx="1"/&gt;&lt;rect x="14" y="3" width="7" height="7" rx="1"/&gt;&lt;rect x="3" y="14" width="7" height="7" rx="1"/&gt;&lt;rect x="14" y="14" width="7" height="7" rx="1"/&gt;&lt;/svg&gt;Resumen&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="mobile-nav-item" onclick="navMobile('personas',this)"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;circle cx="9" cy="7" r="4"/&gt;&lt;path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/&gt;&lt;/svg&gt;Hermanos&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="mobile-nav-item" onclick="navMobile('clases',this)"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/&gt;&lt;/svg&gt;Clases&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="padding:12px 1.5rem;border-top:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:10px"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="sdot syncing" id="syncDotM"&gt;&lt;/div&gt;&lt;span style="font-size:12px;color:rgba(255,255,255,.8)" id="syncMsgM"&gt;Conectando...&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn-refresh" style="margin-left:auto" onclick="loadAll()"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;path d="M23 4v6h-6"/&gt;&lt;path d="M1 20v-6h6"/&gt;&lt;path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/&gt;&lt;/svg&gt;Actualizar&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;main class="main"&gt;</p>
+<p class="p1">&lt;div id="page-dashboard" class="page active"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h1&gt;Resumen&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="metric-grid" id="metrics"&gt;&lt;div class="loading"&gt;&lt;div class="spin"&gt;&lt;/div&gt;Cargando...&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="dash-grid"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="card"&gt;&lt;div class="card-title"&gt;Relación con la Iglesia&lt;/div&gt;&lt;div class="chart-wrap"&gt;&lt;canvas id="chartRelacion"&gt;&lt;/canvas&gt;&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="card"&gt;&lt;div class="card-title"&gt;Hermanos por clase&lt;/div&gt;&lt;div class="chart-wrap"&gt;&lt;canvas id="chartClases"&gt;&lt;/canvas&gt;&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="dash-grid"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="card"&gt;&lt;div class="card-title"&gt;Participación en grupos&lt;/div&gt;&lt;div id="dashGrupos"&gt;&lt;div class="loading"&gt;&lt;div class="spin"&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="card"&gt;&lt;div class="card-title"&gt;Clases sin guía&lt;/div&gt;&lt;div id="sinGuia"&gt;&lt;div class="loading"&gt;&lt;div class="spin"&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div id="page-personas" class="page"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h1&gt;Hermanos&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="toolbar"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="search-box"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;circle cx="11" cy="11" r="8"/&gt;&lt;path d="m21 21-4.35-4.35"/&gt;&lt;/svg&gt;&lt;input id="searchPersonas" placeholder="Buscar por nombre, RUT, clase..." oninput="renderPersonas()"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="btn btn-primary" onclick="openModalPersona()"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;path d="M12 5v14M5 12h14"/&gt;&lt;/svg&gt;Agregar&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="card" style="padding:0;overflow:hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;table&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;thead&gt;&lt;tr&gt;&lt;th style="width:40px"&gt;&lt;/th&gt;&lt;th style="width:110px"&gt;RUT&lt;/th&gt;&lt;th&gt;Nombre&lt;/th&gt;&lt;th style="width:55px"&gt;Edad&lt;/th&gt;&lt;th style="width:140px"&gt;Clase&lt;/th&gt;&lt;th style="width:80px"&gt;Acciones&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;tbody id="bodyPersonas"&gt;&lt;tr&gt;&lt;td colspan="6"&gt;&lt;div class="loading"&gt;&lt;div class="spin"&gt;&lt;/div&gt;Cargando...&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/table&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div id="page-clases" class="page"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h1&gt;Clases&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="toolbar"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="search-box"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;circle cx="11" cy="11" r="8"/&gt;&lt;path d="m21 21-4.35-4.35"/&gt;&lt;/svg&gt;&lt;input id="searchClases" placeholder="Buscar por nombre, comuna..." oninput="renderClases()"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="btn btn-primary" onclick="openModalClase()"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;path d="M12 5v14M5 12h14"/&gt;&lt;/svg&gt;Agregar&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="card" style="padding:0;overflow:hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;table&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Nombre&lt;/th&gt;&lt;th&gt;Dirección&lt;/th&gt;&lt;th&gt;Comuna&lt;/th&gt;&lt;th&gt;Guía&lt;/th&gt;&lt;th style="width:80px"&gt;Hermanos&lt;/th&gt;&lt;th style="width:80px"&gt;Personas&lt;/th&gt;&lt;th style="width:80px"&gt;Acciones&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;tbody id="bodyClases"&gt;&lt;tr&gt;&lt;td colspan="7"&gt;&lt;div class="loading"&gt;&lt;div class="spin"&gt;&lt;/div&gt;Cargando...&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/table&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p1">&lt;/main&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- MODAL HERMANO --&gt;</p>
+<p class="p1">&lt;div class="modal-bg" id="modalPersona"&gt;</p>
+<p class="p1">&lt;div class="modal"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="modal-header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2 id="mpTitulo"&gt;Agregar hermano&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button onclick="closeModalPersona()"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;path d="M18 6L6 18M6 6l12 12"/&gt;&lt;/svg&gt;&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="modal-body"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="modal-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="modal-section-title"&gt;Identificación&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="fr4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="fg"&gt;&lt;label&gt;RUT&lt;/label&gt;&lt;input id="p_rut" placeholder="12.345.678-9"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="fg"&gt;&lt;label&gt;Nombre&lt;/label&gt;&lt;input id="p_nombre"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="fg"&gt;&lt;label&gt;Ap. Paterno&lt;/label&gt;&lt;input id="p_ap"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="fg"&gt;&lt;label&gt;Ap. Materno&lt;/label&gt;&lt;input id="p_am"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="modal-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="modal-section-title"&gt;Datos personales&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="fr4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="fg"&gt;&lt;label&gt;Estado Civil&lt;/label&gt;&lt;select id="p_ecivil"&gt;&lt;option&gt;No informado&lt;/option&gt;&lt;option&gt;Soltero&lt;/option&gt;&lt;option&gt;Casado&lt;/option&gt;&lt;option&gt;Viudo&lt;/option&gt;&lt;option&gt;Divorciado&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="fg"&gt;&lt;label&gt;Fecha Nacimiento&lt;/label&gt;&lt;input id="p_fnac" placeholder="dd/mm/aaaa" oninput="calcEdad()"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="fg"&gt;&lt;label&gt;Edad&lt;/label&gt;&lt;input id="p_edad" readonly style="background:var(--blue-pale);color:var(--text-sec)"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="fg"&gt;&lt;label&gt;Teléfono&lt;/label&gt;&lt;input id="p_tel" placeholder="+56 9 ..."&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="fr2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="fg"&gt;&lt;label&gt;Correo&lt;/label&gt;&lt;input type="email" id="p_correo"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="fg"&gt;&lt;label&gt;Contacto Emergencia&lt;/label&gt;&lt;input id="p_cemerg"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="fr2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="fg"&gt;&lt;label&gt;Dirección&lt;/label&gt;&lt;input id="p_dir"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="fg"&gt;&lt;label&gt;Comuna&lt;/label&gt;&lt;input id="p_comuna"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="modal-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="modal-section-title"&gt;Participación&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="fr2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="fg"&gt;&lt;label&gt;Clase&lt;/label&gt;&lt;select id="p_clase"&gt;&lt;/select&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="fg"&gt;&lt;label&gt;Relación con la Iglesia&lt;/label&gt;&lt;select id="p_relacion"&gt;&lt;option&gt;No informado&lt;/option&gt;&lt;option&gt;Plena Comunión&lt;/option&gt;&lt;option&gt;Probando&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="fg"&gt;&lt;label&gt;Grupos&lt;/label&gt;&lt;div class="grupos-grid" id="gruposCheck"&gt;&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="modal-actions"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="btn" onclick="closeModalPersona()"&gt;Cancelar&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="btn btn-primary" id="btnSaveP" onclick="savePersona()"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/&gt;&lt;path d="M17 21v-8H7v8M7 3v5h8"/&gt;&lt;/svg&gt;Guardar&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- MODAL CLASE --&gt;</p>
+<p class="p1">&lt;div class="modal-bg" id="modalClase"&gt;</p>
+<p class="p1">&lt;div class="modal" style="max-width:480px"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="modal-header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2 id="mcTitulo"&gt;Agregar clase&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button onclick="closeModalClase()"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;path d="M18 6L6 18M6 6l12 12"/&gt;&lt;/svg&gt;&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="modal-body"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="fg"&gt;&lt;label&gt;Nombre de la clase&lt;/label&gt;&lt;input id="c_nombre"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="fr2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="fg"&gt;&lt;label&gt;Dirección&lt;/label&gt;&lt;input id="c_dir"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="fg"&gt;&lt;label&gt;Comuna&lt;/label&gt;&lt;input id="c_comuna"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="fr2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="fg"&gt;&lt;label&gt;Guía&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="sel-wrap"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;input class="sel-search" id="c_guia_search" placeholder="Buscar guía..." oninput="filterGuias()" onfocus="openSelGuia()" autocomplete="off"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="sel-list" id="c_guia_list"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;input type="hidden" id="c_guia_val"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="fg"&gt;&lt;label&gt;Cantidad de hermanos&lt;/label&gt;&lt;input type="number" id="c_hermanos" min="0" placeholder="0"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="modal-actions"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="btn" onclick="closeModalClase()"&gt;Cancelar&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="btn btn-primary" id="btnSaveC" onclick="saveClase()"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/&gt;&lt;path d="M17 21v-8H7v8M7 3v5h8"/&gt;&lt;/svg&gt;Guardar&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- DETALLE --&gt;</p>
+<p class="p1">&lt;div class="detail-view" id="detailPersona"&gt;</p>
+<p class="p1">&lt;div class="detail-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="detail-header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="display:flex;gap:12px;align-items:center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="detail-avatar" id="dvAvatar"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div&gt;&lt;div class="detail-name" id="dvNombre"&gt;&lt;/div&gt;&lt;div class="detail-sub" id="dvClase"&gt;&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="display:flex;gap:6px;align-items:center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn btn-sm" id="dvBtnEdit" style="background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3);color:#fff"&gt;Editar&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn btn-sm" id="dvBtnDel" style="background:rgba(255,100,100,.2);border-color:rgba(255,150,150,.3);color:#fff"&gt;Eliminar&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn btn-sm" onclick="closeDetail()" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:#fff"&gt;&lt;svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M18 6L6 18M6 6l12 12"/&gt;&lt;/svg&gt;&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="detail-body"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ds" id="dvBasico"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ds" id="dvIglesia"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ds" id="dvContacto"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div class="toast" id="toast"&gt;&lt;/div&gt;</p>
+<p class="p1">&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"&gt;&lt;/script&gt;</p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p1">const API='https://script.google.com/macros/s/AKfycbwNdHAcfwz9teVwWzRpZP1rhrsQg7JXFRtooGLFm1UsLtiq8KjonlL0aRGIKjKwiUXpoQ/exec';</p>
+<p class="p1">const GRUPOS=['Voluntarios','Dorcas','Señoritas','Dorcas Voluntarias','Jóvenes','Intermedios','Ciclistas','Jóvenes Casados','Coro General','Coro Juvenil','Coro Intermedios','Coro de Niños','CBVN'];</p>
+<p class="p1">let personas=[],clases=[],editPId=null,editCId=null,chartR=null,chartC=null;</p>
+<p class="p1">const svgEdit=`&lt;svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/&gt;&lt;path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/&gt;&lt;/svg&gt;`;</p>
+<p class="p1">const svgTrash=`&lt;svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M3 6h18M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2"/&gt;&lt;/svg&gt;`;</p>
+<p class="p1">const svgSpin=`&lt;div class="spin"&gt;&lt;/div&gt;`;</p>
+<p class="p1">const svgSave=`&lt;svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/&gt;&lt;path d="M17 21v-8H7v8M7 3v5h8"/&gt;&lt;/svg&gt;`;</p>
+<p class="p2"><br></p>
+<p class="p1">// ── Fecha normalizer ──────────────────────────────────────────</p>
+<p class="p1">function normalizeFecha(raw){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!raw) return '';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const s=String(raw).trim().replace(/[-]/g,'/');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>// aaaa/mm/dd</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(/^\d{4}\/\d{1,2}\/\d{1,2}$/.test(s)){</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const[y,m,d]=s.split('/');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>// dd/mm/aaaa</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(s)){</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const[d,m,y]=s.split('/');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>// dd/mm/aa</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(/^\d{1,2}\/\d{1,2}\/\d{2}$/.test(s)){</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const[d,m,y]=s.split('/');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const full=parseInt(y)&gt;30?'19'+y:'20'+y;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return `${full}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>// ya en formato yyyy-mm-dd</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(/^\d{4}-\d{2}-\d{2}$/.test(String(raw))) return String(raw);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return '';</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function getEdad(raw){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const fnac=normalizeFecha(raw);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!fnac) return '—';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const h=new Date(),n=new Date(fnac);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>let e=h.getFullYear()-n.getFullYear();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(h.getMonth()-n.getMonth()&lt;0||(h.getMonth()===n.getMonth()&amp;&amp;h.getDate()&lt;n.getDate()))e--;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return e&gt;=0?e:'—';</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function calcEdad(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const v=document.getElementById('p_fnac').value;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('p_edad').value=v?getEdad(v):'';</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">// ── Searchable select (Guía) ──────────────────────────────────</p>
+<p class="p1">let guiaOptions=[];</p>
+<p class="p1">function openSelGuia(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('c_guia_list').classList.add('open');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>filterGuias();</p>
+<p class="p1">}</p>
+<p class="p1">function closeSelGuia(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>setTimeout(()=&gt;document.getElementById('c_guia_list').classList.remove('open'),180);</p>
+<p class="p1">}</p>
+<p class="p1">function filterGuias(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const q=(document.getElementById('c_guia_search').value||'').toLowerCase();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const list=document.getElementById('c_guia_list');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const filtered=[{val:'',label:'Sin guía'},...guiaOptions].filter(o=&gt;o.label.toLowerCase().includes(q));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>list.innerHTML=filtered.map(o=&gt;`&lt;div class="sel-option" onmousedown="selectGuia('${o.val}','${o.label}')"&gt;${o.label||'Sin guía'}&lt;/div&gt;`).join('');</p>
+<p class="p1">}</p>
+<p class="p1">function selectGuia(val,label){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('c_guia_val').value=val;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('c_guia_search').value=label==='Sin guía'?'':label;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('c_guia_list').classList.remove('open');</p>
+<p class="p1">}</p>
+<p class="p1">function populateGuias(val=''){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>guiaOptions=personas.map(p=&gt;{const n=[p['Nombre'],p['Apellido Paterno']].filter(Boolean).join(' ');return{val:n,label:n}});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('c_guia_search').value=val;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('c_guia_val').value=val;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>filterGuias();</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">// ── Field helper ─────────────────────────────────────────────</p>
+<p class="p1">function getField(p,...keys){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>for(const k of keys){</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const found=Object.keys(p).find(pk=&gt;pk.trim().toLowerCase()===k.trim().toLowerCase());</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(found&amp;&amp;p[found]!==undefined&amp;&amp;p[found]!=='')return String(p[found]);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return'';</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function toast(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type+' show';setTimeout(()=&gt;t.classList.remove('show'),3000)}</p>
+<p class="p1">function setSync(s,msg){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>['syncDot','syncDotM'].forEach(id=&gt;{const d=document.getElementById(id);if(d)d.className='sdot'+(s==='syncing'?' syncing':s==='error'?' error':'')});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>['syncMsg','syncMsgM'].forEach(id=&gt;{const el=document.getElementById(id);if(el)el.textContent=msg});</p>
+<p class="p1">}</p>
+<p class="p1">function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open')}</p>
+<p class="p1">function nav(page,el){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.page').forEach(p=&gt;p.classList.remove('active'));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.nav-item,.mobile-nav-item').forEach(n=&gt;n.classList.remove('active'));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('page-'+page).classList.add('active');el.classList.add('active');</p>
+<p class="p1">}</p>
+<p class="p1">function navMobile(page,el){document.getElementById('mobileMenu').classList.remove('open');nav(page,el)}</p>
+<p class="p2"><br></p>
+<p class="p1">async function apiFetch(sheet){const res=await fetch(`${API}?action=read&amp;sheet=${encodeURIComponent(sheet)}`);const d=await res.json();if(!d.ok)throw new Error(d.error);return d.data||[]}</p>
+<p class="p1">async function apiCall(action,sheet,row,index){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>let url=`${API}?action=${action}&amp;sheet=${encodeURIComponent(sheet)}`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(row)url+=`&amp;row=${encodeURIComponent(JSON.stringify(row))}`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(index!==undefined)url+=`&amp;index=${index}`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const res=await fetch(url);const d=await res.json();if(!d.ok)throw new Error(d.error);return d;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">async function loadAll(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>setSync('syncing','Sincronizando...');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>[personas,clases]=await Promise.all([apiFetch('Personas'),apiFetch('Clases')]);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>personas=personas.map((p,i)=&gt;({...p,_idx:i+2,'RUT':String(p['RUT']||'')}));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>clases=clases.map((c,i)=&gt;({...c,_idx:i+2}));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setSync('ok','Sincronizado');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>renderDashboard();renderPersonas();renderClases();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}catch(e){setSync('error','Sin conexión');toast('No se pudo conectar','error')}</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function getGuias(){return new Set(clases.map(c=&gt;c['Guía']).filter(Boolean))}</p>
+<p class="p2"><br></p>
+<p class="p1">function renderDashboard(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const plena=personas.filter(p=&gt;p['Relación']==='Plena Comunión').length;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const prob=personas.filter(p=&gt;p['Relación']==='Probando').length;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const ni=personas.length-plena-prob;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const sg=clases.filter(c=&gt;!c['Guía']).length;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('metrics').innerHTML=`</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="metric"&gt;&lt;div class="metric-val"&gt;${personas.length}&lt;/div&gt;&lt;div class="metric-lbl"&gt;Hermanos&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="metric"&gt;&lt;div class="metric-val"&gt;${clases.length}&lt;/div&gt;&lt;div class="metric-lbl"&gt;Clases&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="metric"&gt;&lt;div class="metric-val"&gt;${plena}&lt;/div&gt;&lt;div class="metric-lbl"&gt;Plena Comunión&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="metric"&gt;&lt;div class="metric-val"&gt;${prob}&lt;/div&gt;&lt;div class="metric-lbl"&gt;Probando&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="metric"&gt;&lt;div class="metric-val" style="color:${sg&gt;0?'#EF4444':'var(--blue-dark)'}"&gt;${sg}&lt;/div&gt;&lt;div class="metric-lbl"&gt;Sin guía&lt;/div&gt;&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(chartR)chartR.destroy();if(chartC)chartC.destroy();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>chartR=new Chart(document.getElementById('chartRelacion'),{type:'doughnut',data:{labels:['Plena Comunión','Probando','No informado'],datasets:[{data:[plena,prob,ni],backgroundColor:['#10B981','#00AEEF','#94A3B8'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:11},boxWidth:12,padding:8}}}}});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const byC={};personas.forEach(p=&gt;{const c=p['Clase']||'Sin clase';byC[c]=(byC[c]||0)+1});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>chartC=new Chart(document.getElementById('chartClases'),{type:'bar',data:{labels:Object.keys(byC),datasets:[{data:Object.values(byC),backgroundColor:'#00AEEF',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:11}}},y:{beginAtZero:true,ticks:{stepSize:1}}}}});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const gc={};personas.forEach(p=&gt;String(p['Grupos']||'').split(',').map(s=&gt;s.trim()).filter(Boolean).forEach(g=&gt;{gc[g]=(gc[g]||0)+1}));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const sorted=Object.entries(gc).sort((a,b)=&gt;b[1]-a[1]);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('dashGrupos').innerHTML=!sorted.length?'&lt;p style="color:var(--text-sec);font-size:13px"&gt;Sin datos&lt;/p&gt;':</p>
+<p class="p1"><span class="Apple-converted-space">    </span>'&lt;div style="display:flex;flex-direction:column;gap:6px"&gt;'+sorted.map(([g,c])=&gt;`&lt;div style="display:flex;align-items:center;gap:8px"&gt;&lt;span style="font-size:13px;flex:1"&gt;${g}&lt;/span&gt;&lt;div style="height:6px;border-radius:3px;background:var(--blue);width:${Math.round(c/personas.length*100)*2}px;min-width:6px"&gt;&lt;/div&gt;&lt;span style="font-size:12px;color:var(--text-sec);min-width:20px;text-align:right"&gt;${c}&lt;/span&gt;&lt;/div&gt;`).join('')+'&lt;/div&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const sgl=clases.filter(c=&gt;!c['Guía']);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('sinGuia').innerHTML=!sgl.length?'&lt;p style="font-size:13px;color:var(--text-sec)"&gt;Todas las clases tienen guía.&lt;/p&gt;':</p>
+<p class="p1"><span class="Apple-converted-space">    </span>'&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Clase&lt;/th&gt;&lt;th&gt;Comuna&lt;/th&gt;&lt;th&gt;Hermanos&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;'+sgl.map(c=&gt;`&lt;tr&gt;&lt;td&gt;${c['Nombre']}&lt;/td&gt;&lt;td&gt;${c['Comuna']}&lt;/td&gt;&lt;td&gt;${c['Cantidad de hermanos']}&lt;/td&gt;&lt;/tr&gt;`).join('')+'&lt;/tbody&gt;&lt;/table&gt;';</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function renderPersonas(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const q=(document.getElementById('searchPersonas').value||'').toLowerCase();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const guias=getGuias();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const data=personas.filter(p=&gt;[p['Nombre'],p['Apellido Paterno'],p['Apellido Materno'],p['RUT'],p['Clase'],p['Relación']].join(' ').toLowerCase().includes(q));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const b=document.getElementById('bodyPersonas');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!data.length){b.innerHTML=`&lt;tr&gt;&lt;td colspan="6"&gt;&lt;div class="empty"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;circle cx="9" cy="7" r="4"/&gt;&lt;path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/&gt;&lt;/svg&gt;Sin resultados&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;`;return}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>b.innerHTML=data.map(p=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const nom=[p['Nombre'],p['Apellido Paterno'],p['Apellido Materno']].filter(Boolean).join(' ');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const ini=((p['Nombre']||'')[0]||'')+((p['Apellido Paterno']||'')[0]||'');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const rel=p['Relación']||'';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const gs=String(p['Grupos']||'').split(',').map(s=&gt;s.trim()).filter(Boolean);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const relClass=rel.toLowerCase().includes('plena')?'bs':rel.toLowerCase().includes('prob')?'bi':'';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const relBadge=relClass?`&lt;span class="badge ${relClass}" style="margin-right:3px"&gt;${rel}&lt;/span&gt;`:'';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const gBadges=gs.map(g=&gt;`&lt;span class="badge bp" style="margin-right:3px"&gt;${g}&lt;/span&gt;`).join('');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const nomCompleto=[p['Nombre'],p['Apellido Paterno']].filter(Boolean).join(' ');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const guiaBadge=guias.has(nomCompleto)?`&lt;span class="badge b-guia" style="margin-right:3px"&gt;Guía&lt;/span&gt;`:'';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const etiquetas=(guiaBadge||relBadge||gBadges)?`&lt;div style="margin-top:5px;white-space:normal"&gt;${guiaBadge}${relBadge}${gBadges}&lt;/div&gt;`:'';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return`&lt;tr style="cursor:pointer" onclick="showDetail('${String(p['RUT'])}')"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;td&gt;&lt;div class="avatar" style="width:32px;height:32px;font-size:11px"&gt;${ini.toUpperCase()}&lt;/div&gt;&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;td style="color:var(--text-sec);text-transform:uppercase"&gt;${p['RUT']||'—'}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;td style="white-space:normal"&gt;&lt;span style="font-weight:600;text-transform:uppercase"&gt;${nom}&lt;/span&gt;${etiquetas}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;td style="text-transform:uppercase"&gt;${getEdad(p['Fecha Nacimiento'])}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;td style="text-transform:uppercase"&gt;${p['Clase']||'—'}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;td style="white-space:nowrap" onclick="event.stopPropagation()"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="btn btn-sm" title="Editar" onclick="editPersona('${String(p['RUT'])}')"&gt;${svgEdit}&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="btn btn-sm btn-danger" title="Eliminar" onclick="delPersona('${String(p['RUT'])}')"&gt;${svgTrash}&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/tr&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}).join('');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function renderClases(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const q=(document.getElementById('searchClases').value||'').toLowerCase();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const data=clases.filter(c=&gt;String(c['Nombre']).toLowerCase().includes(q)||String(c['Comuna']).toLowerCase().includes(q));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const b=document.getElementById('bodyClases');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!data.length){b.innerHTML=`&lt;tr&gt;&lt;td colspan="7"&gt;&lt;div class="empty"&gt;&lt;svg viewBox="0 0 24 24"&gt;&lt;path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/&gt;&lt;/svg&gt;Sin resultados&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;`;return}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>b.innerHTML=data.map(c=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const cnt=personas.filter(p=&gt;p['Clase']===c['Nombre']).length;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return`&lt;tr&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;td style="text-transform:uppercase"&gt;&lt;strong&gt;${c['Nombre']}&lt;/strong&gt;&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;td style="color:var(--text-sec);font-size:12px;text-transform:uppercase"&gt;${c['Dirección']||'—'}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;td style="text-transform:uppercase"&gt;${c['Comuna']||'—'}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;td&gt;${c['Guía']?`&lt;span class="badge bs" style="text-transform:uppercase"&gt;${c['Guía']}&lt;/span&gt;`:'&lt;span class="badge bw"&gt;Sin asignar&lt;/span&gt;'}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;td style="text-align:center"&gt;${c['Cantidad de hermanos']||0}&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;td style="text-align:center"&gt;&lt;span class="badge b-blue"&gt;${cnt}&lt;/span&gt;&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;td style="white-space:nowrap"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="btn btn-sm" title="Editar" onclick="editClase('${c['Nombre']}')"&gt;${svgEdit}&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="btn btn-sm btn-danger" title="Eliminar" onclick="delClase('${c['Nombre']}')"&gt;${svgTrash}&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/td&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/tr&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}).join('');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function buildGruposCheck(sel=[]){document.getElementById('gruposCheck').innerHTML=GRUPOS.map(g=&gt;`&lt;label class="gc"&gt;&lt;input type="checkbox" value="${g}" ${sel.includes(g)?'checked':''}&gt;${g}&lt;/label&gt;`).join('')}</p>
+<p class="p1">function getGruposSel(){return[...document.querySelectorAll('#gruposCheck input:checked')].map(i=&gt;i.value)}</p>
+<p class="p1">function populateClases(val=''){document.getElementById('p_clase').innerHTML='&lt;option value=""&gt;Sin clase&lt;/option&gt;'+clases.map(c=&gt;`&lt;option${c['Nombre']===val?' selected':''}&gt;${c['Nombre']}&lt;/option&gt;`).join('')}</p>
+<p class="p2"><br></p>
+<p class="p1">function openModalPersona(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>editPId=null;document.getElementById('mpTitulo').textContent='Agregar hermano';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>['p_rut','p_nombre','p_ap','p_am','p_tel','p_correo','p_dir','p_comuna','p_cemerg','p_edad','p_fnac'].forEach(id=&gt;document.getElementById(id).value='');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('p_ecivil').value='No informado';document.getElementById('p_relacion').value='No informado';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>populateClases();buildGruposCheck();document.getElementById('modalPersona').classList.add('open');</p>
+<p class="p1">}</p>
+<p class="p1">function closeModalPersona(){document.getElementById('modalPersona').classList.remove('open')}</p>
+<p class="p2"><br></p>
+<p class="p1">async function savePersona(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const nombre=document.getElementById('p_nombre').value.trim();if(!nombre){alert('El nombre es requerido');return}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const fnacRaw=document.getElementById('p_fnac').value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const fnac=normalizeFecha(fnacRaw);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const row={'RUT':document.getElementById('p_rut').value.trim(),'Nombre':nombre,'Apellido Paterno':document.getElementById('p_ap').value.trim(),'Apellido Materno':document.getElementById('p_am').value.trim(),'Estado Civil':document.getElementById('p_ecivil').value,'Fecha Nacimiento':fnac,'Teléfono':document.getElementById('p_tel').value.trim(),'Correo':document.getElementById('p_correo').value.trim(),'Clase':document.getElementById('p_clase').value,'Relación':document.getElementById('p_relacion').value,'Grupos':getGruposSel().join(', '),'Dirección':document.getElementById('p_dir').value.trim(),'Comuna':document.getElementById('p_comuna').value.trim(),'Contacto Emergencia':document.getElementById('p_cemerg').value.trim()};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const btn=document.getElementById('btnSaveP');btn.disabled=true;btn.innerHTML=svgSpin+'Guardando...';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(editPId!==null)await apiCall('update','Personas',row,editPId);else await apiCall('insert','Personas',row);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>toast(editPId?'Hermano actualizado':'Hermano agregado');closeModalPersona();await loadAll();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}catch(e){toast('Error: '+e.message,'error')}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>finally{btn.disabled=false;btn.innerHTML=svgSave+'Guardar'}</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function editPersona(rut){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const p=personas.find(x=&gt;x['RUT']===rut);if(!p)return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>editPId=p._idx;document.getElementById('mpTitulo').textContent='Editar hermano';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('p_rut').value=getField(p,'RUT');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('p_nombre').value=getField(p,'Nombre');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('p_ap').value=getField(p,'Apellido Paterno');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('p_am').value=getField(p,'Apellido Materno');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('p_ecivil').value=getField(p,'Estado Civil')||'No informado';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const fnac=normalizeFecha(getField(p,'Fecha Nacimiento'));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('p_fnac').value=fnac;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('p_edad').value=fnac?getEdad(fnac):'';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('p_tel').value=getField(p,'Teléfono','Telefono');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('p_correo').value=getField(p,'Correo');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('p_relacion').value=getField(p,'Relación','Relacion')||'No informado';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('p_dir').value=getField(p,'Dirección','Direccion');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('p_comuna').value=getField(p,'Comuna');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('p_cemerg').value=getField(p,'Contacto Emergencia');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>populateClases(getField(p,'Clase'));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>buildGruposCheck(getField(p,'Grupos').split(',').map(s=&gt;s.trim()).filter(Boolean));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('modalPersona').classList.add('open');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">async function delPersona(rut){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const p=personas.find(x=&gt;x['RUT']===rut);if(!p)return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!confirm('¿Eliminar a '+[p['Nombre'],p['Apellido Paterno']].filter(Boolean).join(' ')+'?'))return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try{await apiCall('delete','Personas',null,p._idx);toast('Hermano eliminado');await loadAll()}catch(e){toast('Error: '+e.message,'error')}</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function openModalClase(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>editCId=null;document.getElementById('mcTitulo').textContent='Agregar clase';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>['c_nombre','c_dir','c_comuna'].forEach(id=&gt;document.getElementById(id).value='');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('c_hermanos').value='';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>populateGuias('');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('modalClase').classList.add('open');</p>
+<p class="p1">}</p>
+<p class="p1">function closeModalClase(){document.getElementById('modalClase').classList.remove('open')}</p>
+<p class="p2"><br></p>
+<p class="p1">async function saveClase(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const nombre=document.getElementById('c_nombre').value.trim();if(!nombre){alert('El nombre es requerido');return}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const guia=document.getElementById('c_guia_val').value;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const row={'Nombre':nombre,'Dirección':document.getElementById('c_dir').value.trim(),'Comuna':document.getElementById('c_comuna').value.trim(),'Guía':guia,'Cantidad de hermanos':document.getElementById('c_hermanos').value||'0'};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const btn=document.getElementById('btnSaveC');btn.disabled=true;btn.innerHTML=svgSpin+'Guardando...';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(editCId!==null)await apiCall('update','Clases',row,editCId);else await apiCall('insert','Clases',row);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>toast(editCId?'Clase actualizada':'Clase agregada');closeModalClase();await loadAll();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}catch(e){toast('Error: '+e.message,'error')}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>finally{btn.disabled=false;btn.innerHTML=svgSave+'Guardar'}</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function editClase(nombre){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const c=clases.find(x=&gt;x['Nombre']===nombre);if(!c)return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>editCId=c._idx;document.getElementById('mcTitulo').textContent='Editar clase';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('c_nombre').value=c['Nombre']||'';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('c_dir').value=c['Dirección']||'';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('c_comuna').value=c['Comuna']||'';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('c_hermanos').value=c['Cantidad de hermanos']||'';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>populateGuias(c['Guía']||'');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('modalClase').classList.add('open');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">async function delClase(nombre){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const c=clases.find(x=&gt;x['Nombre']===nombre);if(!c)return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!confirm('¿Eliminar la clase '+nombre+'?'))return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try{await apiCall('delete','Clases',null,c._idx);toast('Clase eliminada');await loadAll()}catch(e){toast('Error: '+e.message,'error')}</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function showDetail(rut){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const p=personas.find(x=&gt;x['RUT']===rut);if(!p)return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const nombre=[p['Nombre'],p['Apellido Paterno'],p['Apellido Materno']].filter(Boolean).join(' ');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const ini=((p['Nombre']||'')[0]||'')+((p['Apellido Paterno']||'')[0]||'');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const guias=getGuias();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const nomCorto=[p['Nombre'],p['Apellido Paterno']].filter(Boolean).join(' ');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const esGuia=guias.has(nomCorto);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const claseGuia=esGuia?clases.find(c=&gt;c['Guía']===nomCorto):null;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('dvAvatar').textContent=ini.toUpperCase();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('dvNombre').textContent=nombre;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('dvClase').textContent=(p['Clase']||'Sin clase')+(esGuia?' · Guía de '+claseGuia?.['Nombre']:'');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('dvBtnEdit').onclick=()=&gt;{closeDetail();editPersona(rut)};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('dvBtnDel').onclick=()=&gt;{closeDetail();delPersona(rut)};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('dvBasico').innerHTML=`</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ds-title"&gt;Información personal&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="dr"&gt;&lt;span class="dl"&gt;RUT&lt;/span&gt;&lt;span class="dv"&gt;${p['RUT']||'—'}&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="dr"&gt;&lt;span class="dl"&gt;Fecha nacimiento&lt;/span&gt;&lt;span class="dv"&gt;${p['Fecha Nacimiento']||'—'}&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="dr"&gt;&lt;span class="dl"&gt;Edad&lt;/span&gt;&lt;span class="dv"&gt;${getEdad(p['Fecha Nacimiento'])} años&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="dr"&gt;&lt;span class="dl"&gt;Estado civil&lt;/span&gt;&lt;span class="dv"&gt;${p['Estado Civil']||'—'}&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="dr"&gt;&lt;span class="dl"&gt;Dirección&lt;/span&gt;&lt;span class="dv"&gt;${p['Dirección']||'—'}&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="dr"&gt;&lt;span class="dl"&gt;Comuna&lt;/span&gt;&lt;span class="dv"&gt;${p['Comuna']||'—'}&lt;/span&gt;&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('dvIglesia').innerHTML=`</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ds-title"&gt;Participación&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="dr"&gt;&lt;span class="dl"&gt;Relación&lt;/span&gt;&lt;span class="dv"&gt;${p['Relación']||'—'}&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>${esGuia?`&lt;div class="dr"&gt;&lt;span class="dl"&gt;Guía de&lt;/span&gt;&lt;span class="dv"&gt;${claseGuia?.['Nombre']||'—'}&lt;/span&gt;&lt;/div&gt;`:''}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="dr"&gt;&lt;span class="dl"&gt;Grupos&lt;/span&gt;&lt;span class="dv" style="white-space:normal;text-align:right"&gt;${p['Grupos']||'—'}&lt;/span&gt;&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('dvContacto').innerHTML=`</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ds-title"&gt;Contacto&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="dr"&gt;&lt;span class="dl"&gt;Teléfono&lt;/span&gt;&lt;span class="dv"&gt;${p['Teléfono']||'—'}&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="dr"&gt;&lt;span class="dl"&gt;Correo&lt;/span&gt;&lt;span class="dv"&gt;${p['Correo']||'—'}&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="dr"&gt;&lt;span class="dl"&gt;Emergencia&lt;/span&gt;&lt;span class="dv"&gt;${p['Contacto Emergencia']||'—'}&lt;/span&gt;&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('detailPersona').classList.add('open');</p>
+<p class="p1">}</p>
+<p class="p1">function closeDetail(){document.getElementById('detailPersona').classList.remove('open')}</p>
+<p class="p2"><br></p>
+<p class="p1">document.addEventListener('click',e=&gt;{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!e.target.closest('.sel-wrap')) document.getElementById('c_guia_list')?.classList.remove('open');</p>
+<p class="p1">});</p>
+<p class="p2"><br></p>
+<p class="p1">loadAll();</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
